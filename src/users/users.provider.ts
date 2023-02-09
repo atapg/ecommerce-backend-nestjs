@@ -2,6 +2,8 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
 import Bcrypt from '../utils/bcrypt';
+import { LoginUserDto } from './dto/login-user.dto';
+import Token from '../utils/token';
 
 @Injectable()
 export class UsersProvider {
@@ -46,7 +48,38 @@ export class UsersProvider {
     createUserDto.password = await Bcrypt.hashPassword(createUserDto.password);
 
     // save into db and register
-
     return this.usersService.create(createUserDto);
+  }
+
+  async authenticateUser(loginUserDto: LoginUserDto) {
+    // find user by id
+    const user = await this.usersService.findOneByAttr({
+      username: loginUserDto.username,
+    });
+
+    // username is not correct (there is no user in db with this username)
+    if (!user)
+      throw new HttpException('Incorrect Data', HttpStatus.BAD_REQUEST);
+
+    // compare password with the hashed one
+    const doesPasswordMatches = await Bcrypt.comparePassword(
+      loginUserDto.password,
+      user.password,
+    );
+
+    // entered password does not fit with the hashed password
+    if (!doesPasswordMatches)
+      throw new HttpException('Incorrect Data', HttpStatus.BAD_REQUEST);
+
+    // generate token
+    const token = Token.generateToken(user.id);
+
+    // delete password from user object so we can return it
+    delete user.password;
+
+    return {
+      ...user,
+      token,
+    };
   }
 }
