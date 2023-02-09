@@ -25,11 +25,11 @@ export class CartsController {
   //   return this.cartsService.findAll();
   // }
   //
-  // @Get(':id')
-  // findOne(@Param('id') id: string) {
-  //   return this.cartsService.findOne(+id);
-  // }
-  //
+  @Get(':code')
+  findOne(@Param('code') code: string) {
+    return this.cartsProvider.findAll(code);
+  }
+
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateCartDto: UpdateCartDto) {
   //   return this.cartsService.update(+id, updateCartDto);

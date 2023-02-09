@@ -15,24 +15,32 @@ export class CartsService {
   ) {}
 
   async create(createCartDto: CreateCartDto) {
+    let product;
+
     try {
-      const product = await this.productsService.findOne(
-        createCartDto.productId,
-      );
-
+      product = await this.productsService.findOne(createCartDto.productId);
+    } catch (e) {
       if (!product) Errors.notFoundError('Product');
+    }
 
+    try {
       const newCart = await this.cartsRepository.create(createCartDto);
       newCart.product = product;
 
       return await this.cartsRepository.save(newCart);
     } catch (e) {
-      Errors.error(e);
+      Errors.notFoundError('Product');
     }
   }
 
-  findAll() {
-    return `This action returns all carts`;
+  findAll(code: string) {
+    try {
+      return this.cartsRepository.findBy({
+        code,
+      });
+    } catch (e) {
+      Errors.error(e);
+    }
   }
 
   findOne(id: number) {

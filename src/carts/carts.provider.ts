@@ -15,4 +15,8 @@ export class CartsProvider {
 
     return this.cartsService.create(createCartDto);
   }
+
+  findAll(code: string) {
+    return this.cartsService.findAll(code);
+  }
 }
