@@ -10,7 +10,7 @@ const DatabaseConfig: TypeOrmModuleOptions = {
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_DBNAME,
-  synchronize: true, //TODO make false in production
+  synchronize: true,
   // logging: true,
   entities: ['dist/**/entities/*.entity.js'],
   autoLoadEntities: true,

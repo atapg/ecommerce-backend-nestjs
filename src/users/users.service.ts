@@ -5,6 +5,7 @@ import { IUser } from './entities/users.interface';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Errors } from '../utils/errors';
 
 @Injectable()
 export class UsersService {
@@ -13,12 +14,16 @@ export class UsersService {
   ) {}
 
   async create(createUserDto: CreateUserDto) {
-    const newUser = this.usersRepository.create(createUserDto);
-    await this.usersRepository.save(newUser);
+    try {
+      const newUser = this.usersRepository.create(createUserDto);
+      await this.usersRepository.save(newUser);
 
-    return {
-      message: 'User registered successfully',
-    };
+      return {
+        message: 'User registered successfully',
+      };
+    } catch (e) {
+      Errors.error(e);
+    }
   }
 
   findAll() {
@@ -30,9 +35,13 @@ export class UsersService {
   }
 
   findOneByAttr(attr: object): Promise<IUser> | null {
-    return this.usersRepository.findOneBy({
-      [Object.keys(attr)[0]]: attr[Object.keys(attr)[0]],
-    });
+    try {
+      return this.usersRepository.findOneBy({
+        [Object.keys(attr)[0]]: attr[Object.keys(attr)[0]],
+      });
+    } catch (e) {
+      Errors.error(e);
+    }
   }
 
   update(id: number, updateUserDto: UpdateUserDto) {

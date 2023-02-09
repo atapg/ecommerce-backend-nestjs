@@ -3,12 +3,14 @@ import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import DatabaseConfig from './config/database.config';
 import { ConfigModule } from '@nestjs/config';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot(DatabaseConfig),
     UsersModule,
+    CategoriesModule,
   ],
   controllers: [],
   providers: [],
