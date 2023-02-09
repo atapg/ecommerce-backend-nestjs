@@ -29,7 +29,11 @@ export class ProductsService {
       //
       // newProduct.categories = categories;
 
-      return await this.productsRepository.save(newProduct);
+      return await this.productsRepository.save({
+        tags: JSON.stringify(newProduct.tags),
+        categories: JSON.stringify(newProduct.categories),
+        ...newProduct,
+      });
     } catch (e) {
       Errors.error(e);
     }

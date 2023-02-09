@@ -26,6 +26,9 @@ export class UsersModule {
         { path: 'categories', method: RequestMethod.POST },
         { path: 'categories', method: RequestMethod.PATCH },
         { path: 'categories', method: RequestMethod.DELETE },
+        { path: 'products', method: RequestMethod.POST },
+        { path: 'products', method: RequestMethod.PATCH },
+        { path: 'products', method: RequestMethod.DELETE },
       );
   }
 }
