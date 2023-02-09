@@ -6,8 +6,10 @@ import {
   BaseEntity,
   PrimaryColumn,
   Generated,
+  OneToMany,
 } from 'typeorm';
 import UserRole from '../enums/role.enum';
+import { Cart } from '../../carts/entities/cart.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -38,6 +40,9 @@ export class User extends BaseEntity {
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.customer })
   role: string;
+
+  @OneToMany(() => Cart, (cart) => cart.user)
+  carts: Cart[];
 
   @CreateDateColumn()
   createdAt: Date;

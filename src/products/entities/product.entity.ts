@@ -9,6 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Category } from '../../categories/entities/category.entity';
+import { Cart } from '../../carts/entities/cart.entity';
 
 @Entity()
 export class Product extends BaseEntity {
@@ -26,6 +27,9 @@ export class Product extends BaseEntity {
 
   @Column({ type: 'simple-array' })
   categories: string[];
+
+  @OneToMany(() => Cart, (cart) => cart.product)
+  carts: Cart[];
 
   // @OneToMany((type) => Category, (category) => category.id)
   // categories: Category[];
