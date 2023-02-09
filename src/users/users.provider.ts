@@ -1,6 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
+import Bcrypt from '../utils/bcrypt';
 
 @Injectable()
 export class UsersProvider {
@@ -42,6 +43,7 @@ export class UsersProvider {
       );
 
     // hash pass
+    createUserDto.password = await Bcrypt.hashPassword(createUserDto.password);
 
     // save into db and register
 
