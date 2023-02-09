@@ -13,4 +13,8 @@ export class ProductsProvider {
   findAll() {
     return this.productsService.findAll();
   }
+
+  findOne(id) {
+    return this.productsService.findOne(id);
+  }
 }

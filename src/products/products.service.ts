@@ -48,8 +48,27 @@ export class ProductsService {
     }
   }
 
-  findOne(id) {
-    return `This action returns a #${id} product`;
+  async findOne(id) {
+    try {
+      const product = await this.productsRepository.findOneBy({ id });
+
+      const categories = [];
+      // Product has categories
+      if (product.categories.length > 0) {
+        for (let i = 0; i < product.categories.length; i++) {
+          const cat = await this.categoriesService.findOne(
+            product.categories[i],
+          );
+          categories.push(cat);
+        }
+      }
+
+      product.categories = categories;
+
+      return product;
+    } catch (e) {
+      Errors.error(e);
+    }
   }
 
   update(id: number, updateProductDto: UpdateProductDto) {
