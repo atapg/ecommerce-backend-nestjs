@@ -21,10 +21,10 @@ export class Product extends BaseEntity {
   @Column({ type: 'longtext' })
   description: string;
 
-  @Column({ type: 'json' })
+  @Column({ type: 'simple-array' })
   tags: string[];
 
-  @Column({ type: 'json' })
+  @Column({ type: 'simple-array' })
   categories: string[];
 
   // @OneToMany((type) => Category, (category) => category.id)

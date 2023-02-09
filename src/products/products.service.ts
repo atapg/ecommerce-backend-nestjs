@@ -48,7 +48,7 @@ export class ProductsService {
     }
   }
 
-  findOne(id: number) {
+  findOne(id) {
     return `This action returns a #${id} product`;
   }
 
