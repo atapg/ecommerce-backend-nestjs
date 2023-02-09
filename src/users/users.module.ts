@@ -1,4 +1,4 @@
-import { MiddlewareConsumer, Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UsersController } from './users.controller';
 import { UsersProvider } from './users.provider';
@@ -14,7 +14,18 @@ import { IsAdminMiddleware } from './middlewares/isAdmin.middleware';
 })
 export class UsersModule {
   configure(consumer: MiddlewareConsumer): any {
+    //TODO update middlewares
+
+    // Global middleware for authenticating users
     consumer.apply(AuthenticationMiddleware).forRoutes('categories');
-    consumer.apply(IsAdminMiddleware).forRoutes('categories');
+
+    // Middleware for just admin routes
+    consumer
+      .apply(IsAdminMiddleware)
+      .forRoutes(
+        { path: 'categories', method: RequestMethod.POST },
+        { path: 'categories', method: RequestMethod.PATCH },
+        { path: 'categories', method: RequestMethod.DELETE },
+      );
   }
 }

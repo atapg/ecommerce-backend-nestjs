@@ -11,7 +11,7 @@ export class Errors {
 
   static error(e) {
     // use for debugging
-    // console.log(e)
+    console.log(e);
     throw new HttpException('Something Went Wrong', HttpStatus.BAD_REQUEST);
   }
 

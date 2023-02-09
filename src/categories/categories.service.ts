@@ -34,22 +34,56 @@ export class CategoriesService {
   }
 
   findAll() {
-    return `This action returns all categories`;
+    try {
+      return this.categoryRepository.find();
+    } catch (e) {
+      Errors.error(e);
+    }
   }
 
   async findOne(id: any): Promise<Category> | null {
     try {
-      return await this.categoryRepository.findOneBy({ id });
+      return await this.categoryRepository.findOne({
+        where: { id },
+        relations: ['category'],
+      });
     } catch (e) {
-      Errors.notFoundError('Category');
+      Errors.error(e);
     }
   }
 
-  update(id: number, updateCategoryDto: UpdateCategoryDto) {
-    return `This action updates a #${id} category`;
+  async update(id: string, updateCategoryDto: UpdateCategoryDto) {
+    try {
+      const updateCategory = await this.categoryRepository.findOneBy({ id });
+
+      if (updateCategoryDto.categoryId) {
+        const parentCategory = await this.findOne(updateCategoryDto.categoryId);
+
+        if (!parentCategory) Errors.notFoundError('Category');
+
+        updateCategory.category = parentCategory;
+      }
+
+      return await this.categoryRepository.save({
+        ...updateCategory,
+        ...updateCategoryDto,
+      });
+    } catch (e) {
+      Errors.error(e);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} category`;
+  async remove(id: string) {
+    try {
+      const deleteCategory = await this.categoryRepository.delete({ id });
+
+      if (deleteCategory.affected) {
+        return {
+          message: 'Deleted Successfully',
+        };
+      }
+    } catch (e) {
+      Errors.error(e);
+    }
   }
 }
