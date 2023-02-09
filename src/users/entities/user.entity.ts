@@ -7,6 +7,7 @@ import {
   PrimaryColumn,
   Generated,
 } from 'typeorm';
+import UserRole from '../enums/role.enum';
 
 @Entity()
 export class User extends BaseEntity {
@@ -34,6 +35,9 @@ export class User extends BaseEntity {
 
   @Column({ type: 'varchar' })
   password: string;
+
+  @Column({ type: 'enum', enum: UserRole, default: UserRole.customer })
+  role: string;
 
   @CreateDateColumn()
   createdAt: Date;

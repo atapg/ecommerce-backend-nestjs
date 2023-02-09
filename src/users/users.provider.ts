@@ -77,6 +77,9 @@ export class UsersProvider {
     // delete password from user object so we can return it
     delete user.password;
 
+    // delete returning role to user
+    delete user.role;
+
     return {
       ...user,
       token,
