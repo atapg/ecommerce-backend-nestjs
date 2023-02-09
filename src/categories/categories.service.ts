@@ -56,6 +56,8 @@ export class CategoriesService {
     try {
       const updateCategory = await this.categoryRepository.findOneBy({ id });
 
+      if (!updateCategory) Errors.notFoundError('Category');
+
       if (updateCategoryDto.categoryId) {
         const parentCategory = await this.findOne(updateCategoryDto.categoryId);
 

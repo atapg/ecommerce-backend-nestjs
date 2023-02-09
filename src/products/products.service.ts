@@ -71,11 +71,34 @@ export class ProductsService {
     }
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: number, updateProductDto: UpdateProductDto) {
+    try {
+      const updateProduct = await this.productsRepository.findOneBy({ id });
+
+      if (!updateProduct) Errors.notFoundError('Product');
+
+      return await this.productsRepository.save({
+        ...updateProduct,
+        ...updateProductDto,
+      });
+    } catch (e) {
+      Errors.error(e);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(id) {
+    try {
+      const deleteProduct = await this.productsRepository.delete({ id });
+
+      if (deleteProduct.affected) {
+        return {
+          message: 'Deleted Successfully',
+        };
+      } else {
+        Errors.somethingWentWrong();
+      }
+    } catch (e) {
+      Errors.error(e);
+    }
   }
 }
