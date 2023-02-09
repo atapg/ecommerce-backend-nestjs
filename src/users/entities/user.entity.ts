@@ -41,8 +41,8 @@ export class User extends BaseEntity {
   @Column({ type: 'enum', enum: UserRole, default: UserRole.customer })
   role: string;
 
-  @OneToMany(() => Cart, (cart) => cart.user)
-  carts: Cart[];
+  // @OneToMany(() => Cart, (cart) => cart.user)
+  // carts: Cart[];
 
   @CreateDateColumn()
   createdAt: Date;

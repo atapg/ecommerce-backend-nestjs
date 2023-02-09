@@ -22,8 +22,8 @@ export class Cart extends BaseEntity {
   @ManyToOne(() => Product, (product) => product.id)
   product: Product;
 
-  @ManyToOne(() => User, (user) => user.id)
-  user: User;
+  // @ManyToOne(() => User, (user) => user.id)
+  // user: User;
 
   @Column({ type: 'bigint' })
   quantity: number;

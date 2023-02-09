@@ -24,12 +24,33 @@ export class CartsService {
     }
 
     try {
+      // check if the same product with the same code already exists
+      const cartWithSameProductAlreadyExists =
+        await this.cartsRepository.findOne({
+          where: {
+            code: createCartDto.code,
+            product: {
+              id: +createCartDto.productId,
+            },
+          },
+        });
+
+      // if it exists just add quantity
+      if (cartWithSameProductAlreadyExists) {
+        return await this.cartsRepository.save({
+          ...cartWithSameProductAlreadyExists,
+          quantity:
+            +cartWithSameProductAlreadyExists.quantity + createCartDto.quantity,
+        });
+      }
+
+      // create cart
       const newCart = await this.cartsRepository.create(createCartDto);
       newCart.product = product;
 
       return await this.cartsRepository.save(newCart);
     } catch (e) {
-      Errors.notFoundError('Product');
+      Errors.error(e);
     }
   }
 
