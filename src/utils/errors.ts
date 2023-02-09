@@ -10,7 +10,12 @@ export class Errors {
   }
 
   static error(e) {
-    console.log(e); //TODO edit later
+    // use for debugging
+    // console.log(e)
     throw new HttpException('Something Went Wrong', HttpStatus.BAD_REQUEST);
+  }
+
+  static unauthorized() {
+    throw new HttpException('Unauthorized', HttpStatus.UNAUTHORIZED);
   }
 }

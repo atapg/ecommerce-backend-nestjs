@@ -30,8 +30,12 @@ export class UsersService {
     return `This action returns all users`;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: any) {
+    try {
+      return await this.usersRepository.findOneBy({ id });
+    } catch (e) {
+      Errors.error(e);
+    }
   }
 
   findOneByAttr(attr: object): Promise<IUser> | null {
