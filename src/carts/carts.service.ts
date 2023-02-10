@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
-import { UpdateCartDto } from './dto/update-cart.dto';
+import { DeleteCartDto } from './dto/delete-cart.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cart } from './entities/cart.entity';
 import { Repository } from 'typeorm';
@@ -35,12 +35,11 @@ export class CartsService {
           },
         });
 
-      // if it exists just add quantity
+      // if it exists just put the quantity
       if (cartWithSameProductAlreadyExists) {
         return await this.cartsRepository.save({
           ...cartWithSameProductAlreadyExists,
-          quantity:
-            +cartWithSameProductAlreadyExists.quantity + createCartDto.quantity,
+          quantity: createCartDto.quantity,
         });
       }
 
@@ -68,11 +67,24 @@ export class CartsService {
     return `This action returns a #${id} cart`;
   }
 
-  update(id: number, updateCartDto: UpdateCartDto) {
-    return `This action updates a #${id} cart`;
-  }
+  async remove(deleteCartDto: DeleteCartDto) {
+    try {
+      const deleteProduct = await this.cartsRepository.delete({
+        code: deleteCartDto.code,
+        product: {
+          id: +deleteCartDto.productId,
+        },
+      });
 
-  remove(id: number) {
-    return `This action removes a #${id} cart`;
+      if (deleteProduct.affected) {
+        return {
+          message: 'Deleted Successfully',
+        };
+      } else {
+        Errors.somethingWentWrong();
+      }
+    } catch (e) {
+      Errors.error(e);
+    }
   }
 }

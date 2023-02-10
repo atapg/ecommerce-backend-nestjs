@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateCartDto } from './dto/create-cart.dto';
 import { CartsService } from './carts.service';
 import Helpers from '../utils/helpers';
+import { DeleteCartDto } from './dto/delete-cart.dto';
 
 @Injectable()
 export class CartsProvider {
@@ -18,5 +19,9 @@ export class CartsProvider {
 
   findAll(code: string) {
     return this.cartsService.findAll(code);
+  }
+
+  remove(deleteCartDto: DeleteCartDto) {
+    return this.cartsService.remove(deleteCartDto);
   }
 }
