@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { IUser } from './entities/users.interface';
+import { IUser } from './interfaces/users.interface';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -32,17 +32,25 @@ export class UsersService {
 
   async findOne(id: any) {
     try {
-      return await this.usersRepository.findOneBy({ id });
+      const user = await this.usersRepository.findOneBy({ id });
+
+      delete user.password;
+
+      return user;
     } catch (e) {
       Errors.error(e);
     }
   }
 
-  findOneByAttr(attr: object): Promise<IUser> | null {
+  async findOneByAttr(attr: object): Promise<IUser> | null {
     try {
-      return this.usersRepository.findOneBy({
+      const user = await this.usersRepository.findOneBy({
         [Object.keys(attr)[0]]: attr[Object.keys(attr)[0]],
       });
+
+      delete user.password;
+
+      return user;
     } catch (e) {
       Errors.error(e);
     }

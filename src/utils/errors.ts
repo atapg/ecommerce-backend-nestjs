@@ -11,8 +11,10 @@ export class Errors {
 
   static error(e) {
     // Use for debugging
-    console.log(e);
-    throw new HttpException('Something Went Wrong', HttpStatus.BAD_REQUEST);
+    throw new HttpException(
+      e.response ? e.response : 'Something went wrong',
+      HttpStatus.BAD_REQUEST,
+    );
   }
 
   static unauthorized() {
@@ -21,5 +23,9 @@ export class Errors {
 
   static somethingWentWrong() {
     throw new HttpException('Something Went Wrong', HttpStatus.BAD_REQUEST);
+  }
+
+  static customError(error) {
+    throw new HttpException(error, HttpStatus.BAD_REQUEST);
   }
 }

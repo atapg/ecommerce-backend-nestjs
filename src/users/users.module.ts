@@ -17,7 +17,7 @@ export class UsersModule {
     //TODO update middlewares
 
     // Global middleware for authenticating users
-    // consumer.apply(AuthenticationMiddleware).forRoutes('categories');
+    consumer.apply(AuthenticationMiddleware).forRoutes('orders');
 
     // Middleware for just admin routes
     consumer

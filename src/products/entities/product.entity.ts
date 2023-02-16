@@ -10,8 +10,9 @@ import {
 } from 'typeorm';
 import { Category } from '../../categories/entities/category.entity';
 import { Cart } from '../../carts/entities/cart.entity';
+import { OrderProduct } from '../../order-products/entities/orderProducts.entity';
 
-@Entity()
+@Entity('products')
 export class Product extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: number;
@@ -33,6 +34,12 @@ export class Product extends BaseEntity {
 
   // @OneToMany((type) => Category, (category) => category.id)
   // categories: Category[];
+
+  @OneToMany(
+    (orderProducts) => OrderProduct,
+    (orderProduct) => orderProduct.product,
+  )
+  orderProducts: OrderProduct[];
 
   @Column({ type: 'bigint' })
   price: number;

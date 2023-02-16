@@ -53,6 +53,17 @@ export class CartsService {
     }
   }
 
+  findAllWithRelation(code: string) {
+    try {
+      return this.cartsRepository.find({
+        where: { code },
+        relations: ['product'],
+      });
+    } catch (e) {
+      Errors.error(e);
+    }
+  }
+
   findAll(code: string) {
     try {
       return this.cartsRepository.findBy({
@@ -77,6 +88,22 @@ export class CartsService {
       });
 
       if (deleteProduct.affected) {
+        return {
+          message: 'Deleted Successfully',
+        };
+      } else {
+        Errors.somethingWentWrong();
+      }
+    } catch (e) {
+      Errors.error(e);
+    }
+  }
+
+  async removeById(id: string) {
+    try {
+      const deleteCart = await this.cartsRepository.delete({ id });
+
+      if (deleteCart.affected) {
         return {
           message: 'Deleted Successfully',
         };

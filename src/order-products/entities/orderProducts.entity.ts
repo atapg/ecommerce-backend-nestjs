@@ -10,26 +10,31 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 import { Product } from '../../products/entities/product.entity';
-import { User } from '../../users/entities/user.entity';
+import { Order } from '../../orders/entities/order.entity';
 
-@Entity('carts')
-export class Cart extends BaseEntity {
+@Entity('order_products')
+export class OrderProduct extends BaseEntity {
   @PrimaryColumn({ type: 'uuid' })
   @Generated('uuid')
   id: string;
 
-  // Every cart can only have one product but every product can have multiple carts
-  @ManyToOne(() => Product, (product) => product.id)
+  @ManyToOne((product) => Product, (product) => product.orderProducts)
   product: Product;
 
-  // @ManyToOne(() => User, (user) => user.id)
-  // user: User;
+  @ManyToOne((order) => Order, (order) => order.orderProduct)
+  order: Order;
+
+  @Column({ type: 'simple-json' })
+  details: string;
 
   @Column({ type: 'bigint' })
   quantity: number;
 
-  @Column({ type: 'uuid' })
-  code: string;
+  @Column({ type: 'bigint' })
+  singlePrice: number;
+
+  @Column({ type: 'bigint' })
+  totalPrice: number;
 
   @CreateDateColumn()
   createdAt: Date;

@@ -9,9 +9,9 @@ import {
   OneToMany,
 } from 'typeorm';
 import UserRole from '../enums/role.enum';
-import { Cart } from '../../carts/entities/cart.entity';
+import { Order } from '../../orders/entities/order.entity';
 
-@Entity()
+@Entity('users')
 export class User extends BaseEntity {
   @PrimaryColumn({ type: 'uuid' })
   @Generated('uuid')
@@ -43,6 +43,9 @@ export class User extends BaseEntity {
 
   // @OneToMany(() => Cart, (cart) => cart.user)
   // carts: Cart[];
+
+  @OneToMany(() => Order, (order) => order.user)
+  orders: Order[];
 
   @CreateDateColumn()
   createdAt: Date;

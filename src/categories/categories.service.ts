@@ -14,6 +14,7 @@ export class CategoriesService {
   ) {}
 
   async create(createCategoryDto: CreateCategoryDto) {
+    //TODO validate categories array items and check whether they are true or not
     try {
       const newCategory = await this.categoryRepository.create(
         createCategoryDto,

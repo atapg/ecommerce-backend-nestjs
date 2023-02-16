@@ -8,7 +8,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity()
+@Entity('categories')
 export class Category extends BaseEntity {
   @PrimaryGeneratedColumn()
   id: string;
